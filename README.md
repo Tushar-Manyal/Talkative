@@ -1,4 +1,4 @@
-    REAL-TIME COMMUNICATION (FULLSTACK APPLICATION)
+   REAL-TIME COMMUNICATION (FULLSTACK APPLICATION)
 🌟 Tech stack: MERN + Socket.io + TailwindCSS + Daisy UI
 🎃 Authentication && Authorization with JWT
 👾 Real-time messaging with Socket.io
