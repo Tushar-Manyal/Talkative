@@ -55,7 +55,7 @@ app.use(express.json());
 app.use(cookieparser());
 app.use(
     cors({
-        origin:["http://localhost:5173" , "http://localhost:5174"],
+        origin:["http://localhost:5173","https://talkative-frontend-portion.onrender.com"],
         credentials:true,
        
     })
