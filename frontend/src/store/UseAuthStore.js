@@ -103,7 +103,6 @@
 // }));
 
 
-
 import { create } from "zustand";
 import { axiosInstance } from "../lib/axios.js";
 import toast from "react-hot-toast";
@@ -123,12 +122,11 @@ export const useAuthStore = create((set, get) => ({
   onlineUsers: [],
   socket: null,
 
-  // 🔐 Check if user is logged in
   checkAuth: async () => {
     try {
       const res = await axiosInstance.get("/auth/check");
       set({ authUser: res.data });
-      get().connectSocket(); // ⛓️ Connect socket after login
+      get().connectSocket();
     } catch (error) {
       console.log("Error in checkAuth:", error);
       set({ authUser: null });
@@ -137,7 +135,6 @@ export const useAuthStore = create((set, get) => ({
     }
   },
 
-  // 📝 Signup logic
   signup: async (data) => {
     set({ isSigningUp: true });
     try {
@@ -152,7 +149,6 @@ export const useAuthStore = create((set, get) => ({
     }
   },
 
-  // 🔐 Login logic
   login: async (data) => {
     set({ isLoggingIn: true });
     try {
@@ -167,7 +163,6 @@ export const useAuthStore = create((set, get) => ({
     }
   },
 
-  // 🚪 Logout logic
   logout: async () => {
     try {
       await axiosInstance.post("/auth/logout");
@@ -179,7 +174,6 @@ export const useAuthStore = create((set, get) => ({
     }
   },
 
-  // 🧑‍💼 Profile update
   updateProfile: async (data) => {
     set({ isUpdatingProfile: true });
     try {
@@ -194,10 +188,8 @@ export const useAuthStore = create((set, get) => ({
     }
   },
 
-  // 🔌 Connect socket safely
   connectSocket: () => {
-    const { authUser } = get();
-    const existingSocket = get().socket;
+    const { authUser, socket: existingSocket } = get();
 
     if (!authUser || existingSocket?.connected) return;
 
@@ -211,19 +203,12 @@ export const useAuthStore = create((set, get) => ({
 
     set({ socket });
 
-    // 🔁 Set up listeners
     socket.on("connect", () => {
       console.log("✅ Socket connected:", socket.id);
     });
 
     socket.on("getOnlineUsers", (userIds) => {
       set({ onlineUsers: userIds });
-    });
-
-    // ✅ Handle new message event
-    socket.on("newMessage", (message) => {
-      console.log("📩 New message received:", message);
-      // TODO: Dispatch to chat store or update UI state
     });
 
     socket.on("disconnect", () => {
@@ -235,7 +220,6 @@ export const useAuthStore = create((set, get) => ({
     });
   },
 
-  // ❌ Disconnect socket
   disconnectSocket: () => {
     const socket = get().socket;
     if (socket?.connected) {
@@ -244,4 +228,3 @@ export const useAuthStore = create((set, get) => ({
     }
   },
 }));
-
